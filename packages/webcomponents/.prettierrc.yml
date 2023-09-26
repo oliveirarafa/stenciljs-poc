@@ -1,0 +1,21 @@
+---
+arrowParens: avoid
+bracketSpacing: true
+bracketSameLine: true
+endOfLine: auto
+overrides:
+  - files:
+      - "**/*.css"
+      - "**/*.scss"
+      - "**/*.vue"
+      - "**/*.html"
+    options:
+      singleQuote: false
+printWidth: 120
+singleQuote: true
+trailingComma: all
+tabWidth: 2
+jsxSingleQuote: false
+quoteProps: consistent
+semi: true
+useTabs: false

@@ -1,0 +1,198 @@
+<!doctype html>
+<html dir="ltr" lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Web Components GovBR-DS - @govbr-ds/webcomponents</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/web-components.svg" />
+    <link rel="stylesheet" href="/assets/styles/core.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdngovbr-ds.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&amp;display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  </head>
+  <body>
+    <div class="template-base">
+      <header class="br-header mb-4" id="header" data-sticky="data-sticky">
+        <div class="container-lg">
+          <div class="header-top">
+            <div class="header-logo">
+              <img src="assets/images/web-components.svg" alt="Logo dos Web Components" />
+              <span class="br-divider vertical"></span>
+              <div class="header-sign">Web Components GovBR-DS | Padrão Digital de Governo</div>
+            </div>
+            <div class="header-actions">
+              <div class="header-links dropdown">
+                <button class="br-button circle small" type="button" data-toggle="dropdown" aria-label="Abrir Links">
+                  <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div class="br-list">
+                  <div class="header">
+                    <div class="title">Links</div>
+                  </div>
+                  <a class="br-item" href="https://www.gov.br/ds/webcomponents" target="_blank">Web Components</a>
+                  <a class="br-item" href="https://gov.br/ds" target="_blank">Padrão Digital de Governo</a>
+                  <a class="br-item" href="https://gov.br/ds" target="_blank">
+                    Repositórios de Web Components
+                    <i class="fas fa-code" aria-hidden="true"></i>
+                  </a>
+                  <a class="br-item" href="https://gov.br/ds" target="_blank">
+                    Discord
+                    <i class="fab fa-discord" aria-hidden="true"></i>
+                  </a>
+                  <a class="br-item" href="https://gov.br/ds" target="_blank">
+                    Wiki
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="d-flex flex-fill mb-5" id="main">
+        <div class="container-lg">
+          <div class="row">
+            <div class="col-sm-4 col-lg-3">
+              <div class="br-menu push active" id="main-navigation">
+                <div class="menu-container">
+                  <div class="menu-panel">
+                    <nav class="menu-body"></nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col mb-5">
+              <div class="main-content pl-sm-3 mt-4" id="main-content">
+                <div class="br-message warning" role="alert">
+                  <div class="icon">
+                    <i class="fas fa-info-circle fa-lg" aria-hidden="true"></i>
+                  </div>
+                  <div class="content">
+                    <span class="message-title">Atenção.</span>
+                    <span class="message-body">
+                      <p>Além de testar os componentes nesse ambiente, é necessário fazer:</p>
+                      <ul>
+                        <li>Testes Unitários</li>
+                        <li>Testes Visuais</li>
+                        <li>Testes nos Quickstarts</li>
+                      </ul>
+                      <p>Consulta nossa Wiki para outros detalhes sobre os tipos procedimentos corretos.</p>
+                    </span>
+                  </div>
+                </div>
+                <div id="content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="br-footer">
+        <div class="container-lg">
+          <div class="info">
+            <div class="text-down-01 text-medium pb-3">
+              Todo o conteúdo deste site está publicado sob a licença MIT.
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script type="module" src="/build/webcomponents.esm.js"></script>
+    <script nomodule src="/build/webcomponents.js"></script>
+    <script>
+      const MENU_ITEMS = [
+        {
+          path: "br-button.html",
+          name: "Button",
+        },
+        {
+          path: "br-input.html",
+          name: "Input",
+        },
+      ];
+
+      const CONTENT_ELEMENT = document.getElementById("content");
+      const MENU_BODY = document.querySelector(".menu-body");
+
+      function loadPage(path) {
+        fetch(`./pages/${path}`)
+          .then(response => response.text())
+          .then(html => {
+            CONTENT_ELEMENT.innerHTML = html;
+
+            // Procurar scripts no HTML
+            const scriptTags = CONTENT_ELEMENT.querySelectorAll("script");
+
+            // Executar scripts encontrados
+            scriptTags.forEach(scriptTag => {
+              const scriptSrc = scriptTag.getAttribute("src");
+              if (scriptSrc) {
+                // Se o script tiver um atributo "src", carregue-o como um novo script externo
+                const newScript = document.createElement("script");
+                newScript.src = scriptSrc;
+                document.body.appendChild(newScript);
+              } else {
+                // Se o script estiver contido diretamente na tag <script>, avalie-o
+                eval(scriptTag.textContent);
+              }
+            });
+          })
+          .catch(error => {
+            console.error("Erro ao carregar a página:", error);
+          });
+      }
+
+      function setLinks() {
+        MENU_ITEMS.forEach(page => {
+          const link = document.createElement("a");
+          link.className = "menu-item divider";
+          link.href = "javascript: void(0)";
+
+          const linkText = document.createElement("span");
+          linkText.className = "content";
+          linkText.textContent = page.name;
+
+          link.appendChild(linkText);
+
+          link.addEventListener("click", () => {
+            event.preventDefault();
+            loadPage(page.path);
+            const pathWithoutExtension = page.path.split(".")[0];
+            window.history.pushState({}, "", `/${pathWithoutExtension}`);
+            removeAllActiveClasses();
+            link.classList.add("active");
+          });
+
+          if (window.location.pathname === `/${page.path.split(".")[0]}`) {
+            link.classList.add("active");
+          }
+
+          MENU_BODY.appendChild(link);
+        });
+      }
+
+      function loadPageFromURL() {
+        MENU_ITEMS.forEach(page => {
+          if (window.location.pathname === `/${page.path.split(".")[0]}`) {
+            loadPage(page.path);
+          }
+        });
+      }
+
+      function removeAllActiveClasses() {
+        const menuItems = document.querySelectorAll(".menu-item");
+        menuItems.forEach(item => {
+          item.classList.remove("active");
+        });
+      }
+
+      window.addEventListener("load", () => {
+        setLinks();
+        loadPageFromURL();
+      });
+    </script>
+  </body>
+</html>

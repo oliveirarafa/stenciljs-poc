@@ -1,0 +1,12 @@
+@import "../../../../../node_modules/@govbr-ds/core/src/components/button/button";
+@import "../../../../../node_modules/@govbr-ds/core/src/components/loading/loading";
+
+:host {
+  display: block;
+}
+
+// Contorna o problema relatado na issue abaixo enquanto não é tratada
+// https://gitlab.com/govbr-ds/ds/dev/govbr-ds-dev-core/-/issues/71
+:host([loading])::after{
+  display: none!important;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@govbr-ds/webcomponents-angular",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.6.2"
+  },
+  "peerDependencies": {
+    "@angular/common": "^16.2.6",
+    "@angular/core": "^16.2.6",
+    "@govbr-ds/webcomponents-stencil": "*"
+  }
+}
