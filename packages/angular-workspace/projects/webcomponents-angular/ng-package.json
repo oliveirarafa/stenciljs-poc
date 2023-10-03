@@ -3,5 +3,6 @@
   "dest": "../../dist/webcomponents-angular",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["@govbr-ds/webcomponents-stencil"]
 }
